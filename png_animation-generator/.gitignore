@@ -1,0 +1,9 @@
+/bin/
+/build/
+/dist/
+/lib/
+/include/
+
+*.spec
+*.cfg
+*.png

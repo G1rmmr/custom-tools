@@ -13,11 +13,11 @@ class Sprite:
   
   def generate(self):
     if(os.path.exists(self.exp_path)):
-      print("A sprite {self.name} is already exist!")
+      print(f"A sprite {self.name} is already exist!")
       return
     
     frame_files = [os.path.join(IMG_DIR, file)
-      for file in os.listdir(IMG_DIR) if file.endswith(".png")]
+      for file in os.listdir(IMG_DIR) if file.endswith(".PNG")]
     
     frame_files.sort()
 
@@ -33,7 +33,7 @@ class Sprite:
     for i, frame in enumerate(frames):
       sprite_sheet.paste(frame, (i * frame_width, 0))
 
-    sprite_sheet.save(self.path)
+    sprite_sheet.save(self.exp_path + ".PNG")
     print(f"A sprite {self.name} saved in directory : {SPRITE_DIR}")
 
     return
@@ -50,22 +50,22 @@ class Anim:
       return
     
     sprite_files = [os.path.join(SPRITE_DIR, file)
-      for file in os.listdir(SPRITE_DIR) if file.endswith(".png")]
+      for file in os.listdir(SPRITE_DIR) if file.endswith(".PNG")]
     
     sprite_files.sort()
 
     sprites = [Image.open(file) for file in sprite_files]
 
-    anim_width = max(map(lambda sprite: sprite.size[0], sprites))
+    anim_width = max(list(map(lambda sprite: sprite.size[0], sprites)))
     anim_height = sprites[0].size[1]
 
-    anim_set = Image.new("RGBA", (anim_width, anim_height))
+    anim_set = Image.new("RGBA", (anim_width, len(sprites) * anim_height))
 
     for i, sprite in enumerate(sprites):
-      sprite_width, sprite_height = sprite.sizep
-      anim_set.paste(sprite, sprite_width, i * anim_height)
+      sprite_width, sprite_height = sprite.size
+      anim_set.paste(sprite, (0, i * anim_height))
 
-    anim_set.save(self.exp_path)
+    anim_set.save(self.exp_path + ".PNG")
     print(f"A sprite {self.name} saved in directory : {ANIM_DIR}")
 
     return
